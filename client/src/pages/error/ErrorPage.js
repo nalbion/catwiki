@@ -1,6 +1,6 @@
 import catInCables from './cat-cables.png';
-import {Container} from "@mui/material";
-import {NavLink} from "react-router-dom";
+import {Container} from '@mui/material';
+import {NavLink} from 'react-router-dom';
 import './ErrorPage.css';
 
 function ErrorPage() {

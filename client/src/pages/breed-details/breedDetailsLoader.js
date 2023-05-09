@@ -1,4 +1,5 @@
-export default async function breedDetailsLoader({ params }) {
-    const breed = { breedId: params.breedId } // await getBreedDetails(params.breedId);
-    return { breed }
+import {getBreedDetails} from '../../services/cat-api';
+
+export default function breedDetailsLoader({ params }) {
+    return getBreedDetails(params.breedId);
 }

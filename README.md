@@ -3,6 +3,9 @@
 ## TODO
 - consistent API response schema
 - restrict API responses to required data only
+- save `requestsById` to DB
+- show additional images in breed details page
+- link from top 10 to details page
 
 ## Template
 

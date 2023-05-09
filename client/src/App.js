@@ -1,51 +1,35 @@
-import React from "react";
+import React from 'react';
 import {
   createBrowserRouter,
   RouterProvider,
-} from "react-router-dom";
-import "./App.css";
-import Homepage from "./pages/homepage/Homepage";
-import ErrorPage from "./pages/error/ErrorPage";
-import { BreedDetails, breedDetailsLoader } from "./pages/breed-details";
+} from 'react-router-dom';
+import './App.css';
+import Homepage from './pages/homepage/Homepage';
+import ErrorPage from './pages/error/ErrorPage';
+import { BreedDetails, breedDetailsLoader } from './pages/breed-details';
+import {homepageLoader} from './pages/homepage';
 
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Homepage />,
     errorElement: <ErrorPage />,
-    children: [
-
-    ]
+    loader: homepageLoader,
   },
   {
-    path: '/breed/:breedId',
+    path: '/breeds/:breedId',
     element: <BreedDetails />,
-    // errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />,
     loader: breedDetailsLoader,
   }
 ]);
 
 function App() {
-  const [data, setData] = React.useState(null);
-
-  React.useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
-
   return (
       <React.StrictMode>
         <RouterProvider router={router} />
       </React.StrictMode>
-
-    /*<div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{!data ? "Loading..." : data}</p>
-      </header>
-    </div>*/
   );
 }
 
