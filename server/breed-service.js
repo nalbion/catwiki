@@ -37,7 +37,7 @@ const loadBreeds = async () => {
 
 /**
  * @param {string} name
- * @returns {Promise<Breed[]>}
+ * @returns {Promise<Array<{id: string, name: string}>>}
  */
 export const searchBreed = async (name) => {
     if (!breedsById) {
@@ -45,9 +45,15 @@ export const searchBreed = async (name) => {
     }
 
     const search = name.toLowerCase();
-    return Object.values(breedsById).filter(breed => breed.name.toLowerCase().includes(search) );
+    return Object.values(breedsById)
+        .filter(breed => breed.name.toLowerCase().includes(search))
+        .map(({ id, name }) => ({ id, name }));
 }
 
+/**
+ * @param id
+ * @returns {Promise<Breed>}
+ */
 export const breedDetails = async (id) => {
     if (!breedsById) {
         await loadBreeds()
@@ -56,6 +62,12 @@ export const breedDetails = async (id) => {
     recordRequestForBreed(id);
 
     return breedsById[id];
+}
+
+export const topTenBreeds = async () => {
+    Object.entries(requestsById)
+        .toSorted((a, b) => (b[1] === a[1]) ? a[0].localeCompare(b[0]) : b[1] - a[1])
+        .map(entry => breedsById[entry[0]])
 }
 
 const recordRequestForBreed = (id) => {
