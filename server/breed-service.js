@@ -61,20 +61,20 @@ const searchBreed = async (name) => {
  * @returns {Promise<Breed>}
  */
 const breedDetails = async (id) => {
-    try {
-        if (!breedsById) {
-            await loadBreeds();
-        }
-
-        recordRequestForBreed(id);
-    } catch (err) {
-        console.error('Failed to get breed details', err);
+    if (!breedsById) {
+        await loadBreeds();
     }
+
+    recordRequestForBreed(id);
 
     return breedsById[id];
 }
 
 const topTenBreeds = async () => {
+    if (!breedsById) {
+        await loadBreeds();
+    }
+
     const entries = Object.entries(requestsById);
     entries.sort((a, b) =>
         (b[1] === a[1])
