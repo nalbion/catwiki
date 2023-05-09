@@ -1,7 +1,7 @@
 {
   "name": "catwiki",
   "version": "1.0.0",
-  "description": "",
+  "description": "Web app providing information on different breeds of cats",
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
