@@ -1,4 +1,3 @@
-// import axios from "axios";
 const axios = require('axios');
 
 const baseURL = 'https://api.thecatapi.com/v1'
@@ -7,7 +6,7 @@ const headers = {
     'Content-Type': 'application/json'
 }
 
-const client = axios.create({ baseURL, headers })
+// const client = axios.create({ baseURL, headers })
 
 /**
  * @typedef Breed
@@ -28,9 +27,10 @@ let pendingBreedsRequest = null
 
 const loadBreeds = async () => {
     if (pendingBreedsRequest === null) {
-        pendingBreedsRequest = client.get('/breeds')
+        // const client = axios.create({ baseURL, headers });
+        pendingBreedsRequest = axios.get('/breeds', { baseURL, headers });
     }
-    const response = await pendingBreedsRequest
+    const response = await pendingBreedsRequest;
     breedsById = {};
     requestsById = {};
 
@@ -50,6 +50,7 @@ const searchBreed = async (name) => {
     }
 
     const search = name.toLowerCase();
+
     return Object.values(breedsById)
         .filter(breed => breed.name.toLowerCase().includes(search))
         .map(({ id, name }) => ({ id, name }));
@@ -60,11 +61,15 @@ const searchBreed = async (name) => {
  * @returns {Promise<Breed>}
  */
 const breedDetails = async (id) => {
-    if (!breedsById) {
-        await loadBreeds()
-    }
+    try {
+        if (!breedsById) {
+            await loadBreeds();
+        }
 
-    recordRequestForBreed(id);
+        recordRequestForBreed(id);
+    } catch (err) {
+        console.error('Failed to get breed details', err);
+    }
 
     return breedsById[id];
 }
@@ -74,9 +79,9 @@ const topTenBreeds = async () => {
     entries.sort((a, b) =>
         (b[1] === a[1])
             ? a[0].localeCompare(b[0])
-            : b[1] - a[1])
+            : b[1] - a[1]);
 
-    return entries.slice(0, 10).map(entry => breedsById[entry[0]])
+    return entries.slice(0, 10).map(entry => breedsById[entry[0]]);
 }
 
 const recordRequestForBreed = (id) => {

@@ -1,6 +1,6 @@
 const path = require('path');
-const express = require("express");
-const {searchBreed, breedDetails, topTenBreeds} = require("./breed-service");
+const express = require('express');
+const {searchBreed, breedDetails, topTenBreeds} = require('./breed-service');
 
 const PORT = process.env.PORT || 3001;
 
@@ -12,19 +12,19 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 /**
  * GET /api/breeds?name=ma
  */
-app.get("/api/breeds", async (req, res) => {
+app.get('/api/breeds', async (req, res) => {
   const results = await searchBreed(req.query.name)
   // TODO standardise response schema
   res.json(results);
 });
 
-app.get("/api/breeds/:breedId", async (req, res) => {
+app.get('/api/breeds/:breedId', async (req, res) => {
   const details = await breedDetails(req.params.breedId)
   // TODO standardise response schema
   res.json(details);
 });
 
-app.get("/api/top-10", async (req, res) => {
+app.get('/api/top-10', async (req, res) => {
   const top10 = await topTenBreeds()
   // TODO standardise response schema
   res.json(top10);

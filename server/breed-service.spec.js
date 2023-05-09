@@ -1,44 +1,29 @@
-import mockAxios from 'jest-mock-axios';
-import {breedDetails, searchBreed, topTenBreeds} from "./breed-service";
-
-// const mockAxios = require('jest-mock-axios');
-// const {searchBreed} = require("./breed-service");
+const {breedDetails, searchBreed, topTenBreeds} = require('./breed-service');
 
 describe('breed-service', () => {
-    afterEach(() => {
-        mockAxios.reset();
-    })
 
-    it('searches breeds by name', (done) => {
+    it('searches breeds by name', async () => {
         // When
-        const request = searchBreed('ma');
-        mockBreedsResponse();
+        const results = await searchBreed('ma');
 
         // Then should only contain matches
-        request.then(results => {
-            expect(results.length).toEqual(3);
-            expect(results.map(breed => breed.name)).toEqual(['Khao Manee', 'Malayan', 'Manx']);
-            // just return id and name for search
-            expect(results.some(breed => breed.hasOwnProperty('description'))).toBeFalsy()
-            done();
-        }).catch(done)
+        expect(results.length).toEqual(4);
+        expect(results.map(breed => breed.name)).toEqual(['Himalayan', 'Khao Manee', 'Malayan', 'Manx']);
+        // just return id and name for search
+        expect(results.some(breed => breed.hasOwnProperty('description'))).toBeFalsy();
     })
 
-    it('provides breed details', (done) => {
+    it('provides breed details', async () => {
         // When
-        const request = breedDetails('khao');
-        mockBreedsResponse();
+        const breed = await breedDetails('khao');
 
         // Then
-        request.then(breed => {
-            expect(breed.description).toEqual('The Khao Manee is highly intelligent, with an extrovert and inquisitive nature, however they are also very calm and relaxed, making them an idea lap cat.')
-            done();
-        }).catch(done)
+        expect(breed.description).toEqual('The Khao Manee is highly intelligent, with an extrovert and inquisitive nature, however they are also very calm and relaxed, making them an idea lap cat.')
     })
 
     it('tracks the top 10 most searched cat breeds', async () => {
         // Given
-        const requests = Promise.all([
+        await Promise.all([
             breedDetails('abys'),
             breedDetails('aege'),
             // no esho bah
@@ -51,8 +36,6 @@ describe('breed-service', () => {
             breedDetails('mala'),
             breedDetails('ycho'),
         ]);
-        mockBreedsResponse();
-        await requests
 
         // When
         const top10 = await topTenBreeds()
@@ -71,26 +54,3 @@ describe('breed-service', () => {
         expect(top10[9].id).toEqual('ycho')
     })
 })
-
-const mockBreedsResponse = () => {
-    mockAxios.mockResponse({
-        data: [
-            { id: 'abys', name: 'Abyssinian' },
-            { id: 'aege', name: 'Aegean' },
-            { id: 'esho', name: 'Exotic Shorthair' },
-            { id: 'hbro', name: 'Havana Brown' },
-            { id: 'hima', name: 'Himalayan' },
-            { id: 'jbob', name: 'Japanese Bobtail' },
-            { id: 'java', name: 'Javanese' },
-            {
-                id: 'khao',
-                name: 'Khao Manee',
-                description: 'The Khao Manee is highly intelligent, with an extrovert and inquisitive nature, however they are also very calm and relaxed, making them an idea lap cat.',
-                temperament: 'Calm, Relaxed, Talkative, Playful, Warm',
-            },
-            { id: 'mala', name: 'Malayan' },
-            { id: 'manx', name: 'Manx' },
-            { id: 'ycho', name: 'York Chocolate' }
-        ]
-    })
-}
