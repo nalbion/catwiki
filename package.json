@@ -4,7 +4,8 @@
   "description": "Web app providing information on different breeds of cats",
   "main": "index.js",
   "scripts": {
-    "start": "node -r dotenv/config server/index.js",
+    "start": "node server/index.js",
+    "start:local": "node -r dotenv/config server/index.js",
     "test": "jest ./server",
     "build": "cd client && npm install && npm run build"
   },
