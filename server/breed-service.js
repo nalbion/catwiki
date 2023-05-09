@@ -1,7 +1,7 @@
-import axios from "axios";
-// const axios = require('axios');
+// import axios from "axios";
+const axios = require('axios');
 
-const baseURL = 'https://api.thecatapi.com'
+const baseURL = 'https://api.thecatapi.com/v1'
 const headers = {
     'x-api-key': process.env.CAT_API_KEY,
     'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ const loadBreeds = async () => {
  * @param {string} name
  * @returns {Promise<Array<{id: string, name: string}>>}
  */
-export const searchBreed = async (name) => {
+const searchBreed = async (name) => {
     if (!breedsById) {
         await loadBreeds()
     }
@@ -59,7 +59,7 @@ export const searchBreed = async (name) => {
  * @param id
  * @returns {Promise<Breed>}
  */
-export const breedDetails = async (id) => {
+const breedDetails = async (id) => {
     if (!breedsById) {
         await loadBreeds()
     }
@@ -69,7 +69,7 @@ export const breedDetails = async (id) => {
     return breedsById[id];
 }
 
-export const topTenBreeds = async () => {
+const topTenBreeds = async () => {
     const entries = Object.entries(requestsById);
     entries.sort((a, b) =>
         (b[1] === a[1])
@@ -88,4 +88,10 @@ const recordRequestForBreed = (id) => {
     }
 
     requestsById[id] = count;
+}
+
+module.exports = {
+    searchBreed,
+    breedDetails,
+    topTenBreeds
 }

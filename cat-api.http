@@ -1,2 +1,13 @@
+### CAT API returns all details
 GET https://api.thecatapi.com/v1/breeds
 Content-Type: application/json
+#x-api-key:
+
+### Search breeds
+GET http://localhost:3001/api/breeds?name=ma
+
+### Get breed details
+GET http://localhost:3001/api/breeds/khao
+
+### Get top 10
+GET http://localhost:3001/api/top-10

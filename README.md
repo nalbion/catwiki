@@ -1,5 +1,11 @@
 # CatWiki
 
+## TODO
+- consistent API response schema
+- restrict API responses to required data only
+
+## Template
+
 This is a basic template to get you started with the CatWiki challenge.
 It contains a frontend and a backend, with some very basic interaction
 between them. Feel free to modify whatever you wish, or to start 
