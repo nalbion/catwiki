@@ -24,8 +24,13 @@ let breedsById = null;
  */
 let requestsById = null;
 
+let pendingBreedsRequest = null
+
 const loadBreeds = async () => {
-    const response = await axios.get('/breeds')
+    if (pendingBreedsRequest === null) {
+        pendingBreedsRequest = client.get('/breeds')
+    }
+    const response = await pendingBreedsRequest
     breedsById = {};
     requestsById = {};
 
@@ -65,9 +70,13 @@ export const breedDetails = async (id) => {
 }
 
 export const topTenBreeds = async () => {
-    Object.entries(requestsById)
-        .toSorted((a, b) => (b[1] === a[1]) ? a[0].localeCompare(b[0]) : b[1] - a[1])
-        .map(entry => breedsById[entry[0]])
+    const entries = Object.entries(requestsById);
+    entries.sort((a, b) =>
+        (b[1] === a[1])
+            ? a[0].localeCompare(b[0])
+            : b[1] - a[1])
+
+    return entries.slice(0, 10).map(entry => breedsById[entry[0]])
 }
 
 const recordRequestForBreed = (id) => {
